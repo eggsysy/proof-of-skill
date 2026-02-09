@@ -1,0 +1,3 @@
+
+{"chainId":80002,"type":"DEPLOYMENT_INITIALIZE"}
+{"artifactId":"CreatorEndowmentModule#CreatorEndowment","constructorArgs":["0x322402179f826645300B4F97334795246D743d8c","0x45f2612cf1e0978e1c1cf3cba8d6b8c5211e32ca"],"contractName":"CreatorEndowment","dependencies":[],"from":"0xa58374c9a29e5b28d0610d325178c008a57e92da","futureId":"CreatorEndowmentModule#CreatorEndowment","futureType":"NAMED_ARTIFACT_CONTRACT_DEPLOYMENT","libraries":{},"strategy":"basic","strategyConfig":{},"type":"DEPLOYMENT_EXECUTION_STATE_INITIALIZE","value":{"_kind":"bigint","value":"0"}}
