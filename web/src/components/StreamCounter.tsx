@@ -1,50 +1,38 @@
 "use client";
 
-import * as React from "react";
-
+import { useStreamCounter } from "@/hooks/useStreamCounter";
 import { cn } from "@/lib/utils";
+import { useState, useEffect } from "react";
 
 interface StreamCounterProps {
   initialBalance: number;
   flowRatePerSecond: number;
   className?: string;
-  prefix?: string;
-  decimals?: number;
 }
 
 export function StreamCounter({
   initialBalance,
   flowRatePerSecond,
   className,
-  prefix = "$",
-  decimals = 2,
 }: StreamCounterProps) {
-  const [currentValue, setCurrentValue] = React.useState(initialBalance);
-  const startTimeRef = React.useRef(0);
+  const balance = useStreamCounter(initialBalance, flowRatePerSecond);
+  const [isMounted, setIsMounted] = useState(false);
 
-  React.useEffect(() => {
-    startTimeRef.current = Date.now();
-    setCurrentValue(initialBalance);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
-    const interval = window.setInterval(() => {
-      const elapsedSeconds = (Date.now() - startTimeRef.current) / 1000;
-      setCurrentValue(initialBalance + flowRatePerSecond * elapsedSeconds);
-    }, 100);
-
-    return () => window.clearInterval(interval);
-  }, [flowRatePerSecond, initialBalance]);
-
-  const formattedValue = React.useMemo(() => {
-    return new Intl.NumberFormat("en-US", {
-      minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals,
-    }).format(currentValue);
-  }, [currentValue, decimals]);
+  // If not mounted, show a static or unformatted version to match the server
+  if (!isMounted) {
+    return <span className={cn("font-mono tabular-nums", className)}>{initialBalance}</span>;
+  }
 
   return (
     <span className={cn("font-mono tabular-nums", className)}>
-      {prefix}
-      {formattedValue}
+      {balance.toLocaleString("en-US", { // 👈 Tip: Lock to "en-US" to be 100% safe
+        minimumFractionDigits: 6,
+        maximumFractionDigits: 6,
+      })}
     </span>
   );
 }

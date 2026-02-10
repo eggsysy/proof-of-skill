@@ -4,16 +4,18 @@ pragma solidity ^0.8.28;
 import {ISuperfluid, ISuperToken} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperfluid.sol";
 import {ISuperAgreement} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/superfluid/ISuperAgreement.sol";
 import {IInstantDistributionAgreementV1} from "@superfluid-finance/ethereum-contracts/contracts/interfaces/agreements/IInstantDistributionAgreementV1.sol";
+import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
-contract CreatorEndowment {
+contract CreatorEndowment is Ownable {
     ISuperfluid private _host;
     IInstantDistributionAgreementV1 private _ida;
     ISuperToken public streamingToken;
 
     address public creator;
     uint32 public constant INDEX_ID = 0;
+    event RevenueDistributed(uint256 amount, uint256 timestamp);
 
-    constructor(address host, address token) {
+    constructor(address host, address token) Ownable(msg.sender) {
         _host = ISuperfluid(host);
         streamingToken = ISuperToken(token);
         creator = msg.sender;
@@ -21,8 +23,7 @@ contract CreatorEndowment {
         _tryInitializeIdaReference();
     }
 
-    function initializeIDA() external {
-        require(msg.sender == creator, "Only creator can initialize IDA");
+    function initializeIDA() external onlyOwner {
         require(address(_ida) == address(0), "IDA already initialized");
 
         ISuperAgreement idaContract = _host.getAgreementClass(
@@ -61,23 +62,29 @@ contract CreatorEndowment {
         );
     }
 
-    function distributeRevenue(uint256 amount) external {
-        require(msg.sender == creator, "Only the creator can trigger distribution");
+    function distribute(uint256 amount) external onlyOwner {
         _ensureIdaInitialized();
+        require(streamingToken.balanceOf(address(this)) >= amount, "Insufficient contract balance");
 
-        streamingToken.transferFrom(msg.sender, address(this), amount);
+        (bool indexExists,,,) = _ida.getIndex(streamingToken, address(this), INDEX_ID);
+        require(indexExists, "IDA index does not exist");
+        (uint256 actualAmount, uint128 newIndexValue) =
+            _ida.calculateDistribution(streamingToken, address(this), INDEX_ID, amount);
+        require(actualAmount > 0, "Amount too low");
 
         _host.callAgreement(
             _ida,
             abi.encodeWithSelector(
-                _ida.distribute.selector,
+                _ida.updateIndex.selector,
                 streamingToken,
                 INDEX_ID,
-                amount,
+                newIndexValue,
                 new bytes(0)
             ),
             new bytes(0)
         );
+
+        emit RevenueDistributed(actualAmount, block.timestamp);
     }
 
     function _tryInitializeIdaReference() internal {
@@ -92,5 +99,16 @@ contract CreatorEndowment {
 
     function _ensureIdaInitialized() internal view {
         require(address(_ida) != address(0), "IDA not initialized");
+    }
+
+    // Add this function to your contract
+    function getBackerUnits(address backer) public view returns (uint128 units) {
+        // This queries the Superfluid IDA for the specific subscriber's units
+        (,, units,) = _ida.getSubscription(
+            streamingToken,
+            address(this), // The publisher (this contract)
+            INDEX_ID,      // Usually 0
+            backer         // The user
+        );
     }
 }
