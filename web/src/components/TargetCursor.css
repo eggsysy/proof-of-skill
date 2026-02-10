@@ -1,0 +1,31 @@
+.target-cursor-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference; /* Makes it visible on all backgrounds */
+}
+
+.target-cursor-dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background-color: #10BB35; /* Your Brand Green */
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.target-cursor-corner {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  border: 2px solid #10BB35;
+  pointer-events: none;
+}
+
+/* Specific corner shapes */
+.corner-tl { border-right: 0; border-bottom: 0; transform: translate(-18px, -18px); }
+.corner-tr { border-left: 0; border-bottom: 0; transform: translate(6px, -18px); }
+.corner-br { border-left: 0; border-top: 0; transform: translate(6px, 6px); }
+.corner-bl { border-right: 0; border-top: 0; transform: translate(-18px, 6px); }

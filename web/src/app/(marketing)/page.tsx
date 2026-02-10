@@ -3,10 +3,19 @@
 import { ArrowRight, Feather } from "lucide-react";
 import { Navigation } from "@/components/Navigation";
 import Link from "next/link";
+import TargetCursor from "@/components/TargetCursor"; // Import the cursor
 
 export default function MarketingPage() {
   return (
     <main className="min-h-screen bg-[#050505] text-[#f4f4f4]">
+      {/* Optional: Local instance of the cursor with specific props */}
+      <TargetCursor 
+        spinDuration={2}
+        hideDefaultCursor={true}
+        parallaxOn={true}
+        hoverDuration={0.2}
+      />
+      
       <Navigation />
       <section className="border-b border-[#222222] px-4 py-14">
         <div className="mx-auto w-full max-w-7xl space-y-8 text-center">
@@ -19,15 +28,16 @@ export default function MarketingPage() {
             favorite creators, and share in their success.
           </p>
           <div className="flex justify-center gap-4">
+            {/* Added cursor-target class and role-specific query params */}
             <Link
-              href="/signin"
-              className="inline-flex h-12 items-center justify-center rounded-md bg-[#10BB35] px-8 text-sm font-medium text-black shadow transition-colors hover:bg-[#0da42d] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              href="/signin?role=backer"
+              className="cursor-target inline-flex h-12 items-center justify-center rounded-md bg-[#10BB35] px-8 text-sm font-medium text-black shadow transition-colors hover:bg-[#0da42d] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             >
               Start Backing
             </Link>
             <Link
-              href="/signin"
-              className="inline-flex h-12 items-center justify-center rounded-md border border-[#222222] bg-transparent px-8 text-sm font-medium shadow-sm transition-colors hover:bg-[#111] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              href="/signin?role=creator"
+              className="cursor-target inline-flex h-12 items-center justify-center rounded-md border border-[#222222] bg-transparent px-8 text-sm font-medium shadow-sm transition-colors hover:bg-[#111] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             >
               Launch Your Pool
             </Link>
@@ -48,9 +58,9 @@ export default function MarketingPage() {
             </p>
           </div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            {/* Step 1 */}
-            <div className="flex flex-col items-center space-y-4 text-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0D0D0D] border border-[#222]">
+            {/* Step 1 - Added cursor-target to the icon containers for a nice effect */}
+            <div className="cursor-target flex flex-col items-center space-y-4 text-center group">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0D0D0D] border border-[#222] transition-colors group-hover:border-[#10BB35]">
                 <Feather className="h-6 w-6 text-[#10BB35]" />
               </div>
               <div className="space-y-2">
@@ -60,9 +70,10 @@ export default function MarketingPage() {
                 </p>
               </div>
             </div>
+            
             {/* Step 2 */}
-            <div className="flex flex-col items-center space-y-4 text-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0D0D0D] border border-[#222]">
+            <div className="cursor-target flex flex-col items-center space-y-4 text-center group">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0D0D0D] border border-[#222] transition-colors group-hover:border-[#10BB35]">
                 <ArrowRight className="h-6 w-6 text-[#10BB35]" />
               </div>
               <div className="space-y-2">
@@ -72,9 +83,10 @@ export default function MarketingPage() {
                 </p>
               </div>
             </div>
+
             {/* Step 3 */}
-            <div className="flex flex-col items-center space-y-4 text-center">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0D0D0D] border border-[#222]">
+            <div className="cursor-target flex flex-col items-center space-y-4 text-center group">
+              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0D0D0D] border border-[#222] transition-colors group-hover:border-[#10BB35]">
                 <Feather className="h-6 w-6 text-[#10BB35]" />
               </div>
               <div className="space-y-2">

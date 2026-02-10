@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { IBM_Plex_Mono, Space_Grotesk } from "next/font/google";
 
 import { Web3Provider } from "@/components/Web3Provider";
+import TargetCursor from '@/components/TargetCursor'; // Import the new component
 
 import "./globals.css";
 
@@ -28,8 +29,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${spaceGrotesk.variable} ${plexMono.variable} antialiased`}>
-        <Web3Provider>{children}</Web3Provider>
+      <body className={`${spaceGrotesk.variable} ${plexMono.variable} antialiased bg-[#050505]`}>
+        {/* Global custom cursor component */}
+        
+        
+        <Web3Provider>
+          {children}
+        </Web3Provider>
       </body>
     </html>
   );
