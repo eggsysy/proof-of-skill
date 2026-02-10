@@ -3,6 +3,8 @@
 import { ShieldCheck, Wallet, Zap } from "lucide-react";
 import { useAccount, useConnect, useDisconnect, useSwitchChain } from "wagmi";
 import { polygonAmoy } from "wagmi/chains";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
 
@@ -19,11 +21,16 @@ export function Navigation() {
   const { connect, connectors, isPending } = useConnect();
   const { disconnect } = useDisconnect();
   const { switchChain } = useSwitchChain();
+  const router = useRouter();
 
   const handleWalletAction = () => {
     if (!isConnected) {
       if (connectors[0]) {
-        connect({ connector: connectors[0] });
+        connect({ connector: connectors[0] },{
+          onSuccess: () => {
+            router.push('/auth');
+          }
+        });
       }
       return;
     }
@@ -51,7 +58,7 @@ export function Navigation() {
   return (
     <header className="sticky top-0 z-50 border-b border-[#222222] bg-[#050505]/95 backdrop-blur">
       <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-3">
           <div className="grid h-9 w-9 place-items-center border border-[#10BB35] bg-[#0D0D0D] text-[#10BB35]">
             <Zap className="h-4 w-4" />
           </div>
@@ -63,7 +70,7 @@ export function Navigation() {
               Superfluid Revenue Rails
             </p>
           </div>
-        </div>
+        </Link>
 
         <div className="flex items-center gap-2">
           <div className="hidden items-center gap-1 border border-[#222222] bg-[#0D0D0D] px-2 py-1 text-[10px] uppercase tracking-[0.1em] text-[#9f9f9f] sm:flex">
