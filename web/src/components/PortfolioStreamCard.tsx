@@ -1,6 +1,8 @@
 import { ArrowUpRight, Waves } from "lucide-react";
+import ElectricBorder from '@/components/ElectricBorder';
 import { StreamCounter } from "@/components/StreamCounter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 interface PortfolioStreamCardProps {
   creatorName: string;
@@ -15,8 +17,20 @@ export function PortfolioStreamCard({
   initialValue,
   flowRatePerSecond,
 }: PortfolioStreamCardProps) {
+  const handleBoost = () => {
+    alert(`Boosting stream for ${creatorName}! (placeholder action)`);
+    // Placeholder for Superfluid updateFlow logic
+  };
+
   return (
-    <Card className="bg-[#0D0D0D] border-[#222222] transition-all duration-300 hover:border-[#10BB35]/50 group">
+    <ElectricBorder
+      color="#10BB35" // Green color
+      speed={1}
+      chaos={0.12}
+      thickness={2}
+      style={{ borderRadius: 16 }}
+    >
+      <Card className="bg-[#0D0D0D] border-[#222222] transition-all duration-300 hover:border-[#10BB35]/50 group">
       <CardHeader className="border-b border-[#222222]">
         <CardTitle className="flex items-center justify-between text-sm text-[#f4f4f4]">
           <span className="font-semibold tracking-tight">{creatorName}</span>
@@ -51,7 +65,14 @@ export function PortfolioStreamCard({
             Live Stream <ArrowUpRight className="h-3 w-3" />
           </div>
         </div>
+
+        <Button
+          onClick={handleBoost}
+          className="w-full bg-[#10BB35] text-black hover:bg-[#0da02d] font-bold uppercase tracking-tighter mt-4"
+        >
+          <span className="text-xl leading-none mr-1">$</span> Boost Stream
+        </Button>
       </CardContent>
-    </Card>
-  );
+          </Card>
+        </ElectricBorder>  );
 }

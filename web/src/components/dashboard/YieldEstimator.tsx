@@ -43,6 +43,14 @@ export function YieldEstimator() {
             <p className="text-3xl font-bold text-[#10BB35]">${userEarnings}</p>
             <p className="text-xs text-[#555]">in real-time streams</p>
           </div>
+          {/* Projected Year 1 Returns */}
+          <div className="text-center mt-4 border-t border-[#222222] pt-4">
+            <p className="text-[#888] text-sm">Projected Year 1 Returns:</p>
+            <p className="text-xl font-bold text-[#10BB35]">
+              ${(parseFloat(userEarnings) * 12).toFixed(2)}
+            </p>
+            <p className="text-xs text-[#555]">(Based on current flow rate)</p>
+          </div>
         </div>
       </CardContent>
     </Card>

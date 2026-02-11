@@ -3,12 +3,12 @@
 import { ArrowRight, Feather } from "lucide-react";
 import { Navigation } from "@/components/Navigation";
 import Link from "next/link";
-import TargetCursor from "@/components/TargetCursor"; // Import the cursor
+import TargetCursor from "@/components/TargetCursor";
+import { DecryptedText } from "@/components/DecryptedText"; // Import the decrypt component
 
 export default function MarketingPage() {
   return (
     <main className="min-h-screen bg-[#050505] text-[#f4f4f4]">
-      {/* Optional: Local instance of the cursor with specific props */}
       <TargetCursor 
         spinDuration={2}
         hideDefaultCursor={true}
@@ -19,25 +19,45 @@ export default function MarketingPage() {
       <Navigation />
       <section className="border-b border-[#222222] px-4 py-14">
         <div className="mx-auto w-full max-w-7xl space-y-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tighter">
-            The Future of Fandom <br /> is a{" "}
-            <span className="text-[#10BB35]">Dividend</span>
+          {/* Hero Heading with Decrypt Effect */}
+          <h1 className="text-4xl md:text-7xl font-bold tracking-tighter leading-tight">
+            <DecryptedText 
+              text="The Future of Fandom"
+              animateOn="view"
+              revealDirection="center"
+              speed={80}
+              className="text-white"
+            />
+            <br />
+            <span className="flex items-center justify-center gap-3">
+              is a 
+              <DecryptedText 
+                text="Dividend"
+                animateOn="view"
+                revealDirection="start"
+                sequential={true}
+                speed={100}
+                className="text-[#10BB35]" 
+                encryptedClassName="text-[#10BB35] opacity-40"
+              />
+            </span>
           </h1>
+
           <p className="mx-auto max-w-2xl text-lg text-[#888]">
             A new era for creators and their supporters. Launch a pool, back your
             favorite creators, and share in their success.
           </p>
+
           <div className="flex justify-center gap-4">
-            {/* Added cursor-target class and role-specific query params */}
             <Link
               href="/signin?role=backer"
-              className="cursor-target inline-flex h-12 items-center justify-center rounded-md bg-[#10BB35] px-8 text-sm font-medium text-black shadow transition-colors hover:bg-[#0da42d] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              className="cursor-target inline-flex h-12 items-center justify-center rounded-md bg-[#10BB35] px-8 text-sm font-medium text-black shadow transition-colors hover:bg-[#0da42d]"
             >
               Start Backing
             </Link>
             <Link
               href="/signin?role=creator"
-              className="cursor-target inline-flex h-12 items-center justify-center rounded-md border border-[#222222] bg-transparent px-8 text-sm font-medium shadow-sm transition-colors hover:bg-[#111] focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+              className="cursor-target inline-flex h-12 items-center justify-center rounded-md border border-[#222222] bg-transparent px-8 text-sm font-medium shadow-sm transition-colors hover:bg-[#111]"
             >
               Launch Your Pool
             </Link>
@@ -58,45 +78,22 @@ export default function MarketingPage() {
             </p>
           </div>
           <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
-            {/* Step 1 - Added cursor-target to the icon containers for a nice effect */}
-            <div className="cursor-target flex flex-col items-center space-y-4 text-center group">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0D0D0D] border border-[#222] transition-colors group-hover:border-[#10BB35]">
-                <Feather className="h-6 w-6 text-[#10BB35]" />
+            {/* Steps */}
+            {[
+              { icon: Feather, title: "1. Discover", desc: "Find rising stars in Tech, Art, or Gaming." },
+              { icon: ArrowRight, title: "2. Back", desc: "Buy 'Growth Shares' in their pool to show support." },
+              { icon: Feather, title: "3. Earn", desc: "Watch your balance tick up in real-time." }
+            ].map((step, i) => (
+              <div key={i} className="cursor-target flex flex-col items-center space-y-4 text-center group">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0D0D0D] border border-[#222] transition-colors group-hover:border-[#10BB35]">
+                  <step.icon className="h-6 w-6 text-[#10BB35]" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold">{step.title}</h3>
+                  <p className="text-[#888]">{step.desc}</p>
+                </div>
               </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-semibold">1. Discover</h3>
-                <p className="text-[#888]">
-                  Find rising stars in Tech, Art, or Gaming.
-                </p>
-              </div>
-            </div>
-            
-            {/* Step 2 */}
-            <div className="cursor-target flex flex-col items-center space-y-4 text-center group">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0D0D0D] border border-[#222] transition-colors group-hover:border-[#10BB35]">
-                <ArrowRight className="h-6 w-6 text-[#10BB35]" />
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-semibold">2. Back</h3>
-                <p className="text-[#888]">
-                  Buy "Growth Shares" in their pool to show your support.
-                </p>
-              </div>
-            </div>
-
-            {/* Step 3 */}
-            <div className="cursor-target flex flex-col items-center space-y-4 text-center group">
-              <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#0D0D0D] border border-[#222] transition-colors group-hover:border-[#10BB35]">
-                <Feather className="h-6 w-6 text-[#10BB35]" />
-              </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-semibold">3. Earn</h3>
-                <p className="text-[#888]">
-                  Watch your balance tick up in real-time every time they
-                  distribute revenue.
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>
